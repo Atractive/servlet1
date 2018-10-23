@@ -45,7 +45,8 @@ public class Servlet1 extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Servlet1 at " + request.getContextPath() + "</h1>");
-
+            
+            /*Partie 1
             DAO myDAO = new DAO(DataSourceFactory.getDataSource());
             List<CustomerEntity> result = myDAO.customersInState(request.getParameter("state"));
             
@@ -65,7 +66,18 @@ public class Servlet1 extends HttpServlet {
                 out.println("</tr>");
             }
             
-            out.println("</table>");
+            out.println("</table>");*/
+            
+            out.println("<select>");
+            out.println("<option value=1>FL</option>");
+            out.println("<option value=2>TX</option>");
+            out.println("<option value=3>GA</option>");
+            out.println("<option value=4>CA</option>");
+            out.println("<option value=5>MI</option>");
+            out.println("<option value=6>NY</option>");
+            out.println("</select>");
+            
+            out.println("<input type='button' value='Valider'>");
             
             
             
