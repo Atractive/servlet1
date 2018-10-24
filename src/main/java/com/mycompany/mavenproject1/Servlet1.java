@@ -7,6 +7,7 @@ package com.mycompany.mavenproject1;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ public class Servlet1 extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, DAOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -46,11 +48,29 @@ public class Servlet1 extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet Servlet1 at " + request.getContextPath() + "</h1>");
             
-            /*Partie 1
-            DAO myDAO = new DAO(DataSourceFactory.getDataSource());
-            List<CustomerEntity> result = myDAO.customersInState(request.getParameter("state"));
+            /*Partie 2*/
+            States myDAOStates = new States(DataSourceFactory.getDataSource());
+            ArrayList ListStates = myDAOStates.StatesList();
             
-            out.println("<table>");
+            /*Création du formulaire*/
+            out.println("<form method = 'post'>");
+            out.println("<select name = 'form1'>");
+            
+            for (int i=0; i<ListStates.size(); i++){
+                out.println("<option value="+ListStates.get(i)+">"+ListStates.get(i)+"</option>");
+            }
+            out.println("</select>");
+            
+            out.println("<button type='submit' name='button1'>Valider</button>");
+            out.println("<form>");
+            
+            /*Partie 1*/
+            DAO myDAO = new DAO(DataSourceFactory.getDataSource());
+            String etatactuel = request.getParameter("form1");
+            List<CustomerEntity> result = myDAO.customersInState(etatactuel);
+            
+            /*Création de la table*/
+            out.println("<table style = 'border : 1px solid black'>");
             
             out.println("<tr>");
             out.println("<th>Nom</th>");
@@ -66,20 +86,13 @@ public class Servlet1 extends HttpServlet {
                 out.println("</tr>");
             }
             
-            out.println("</table>");*/
+            out.println("</table>");
             
-            out.println("<select>");
-            out.println("<option value=1>FL</option>");
-            out.println("<option value=2>TX</option>");
-            out.println("<option value=3>GA</option>");
-            out.println("<option value=4>CA</option>");
-            out.println("<option value=5>MI</option>");
-            out.println("<option value=6>NY</option>");
-            out.println("</select>");
-            
-            out.println("<input type='button' value='Valider'>");
-            
-            
+            /*Style de la table*/
+            out.println("<style>");
+            out.println("table, th, td {\n" +"    border: 1px solid black;\n" +"}");
+            out.println("table {\n" +"    border-spacing: 5px;\n" +"}");
+            out.println("</style>");
             
             out.println("</body>");
             out.println("</html>");
@@ -99,6 +112,7 @@ public class Servlet1 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            
             processRequest(request, response);
         } catch (DAOException ex) {
             Logger.getLogger(Servlet1.class.getName()).log(Level.SEVERE, null, ex);
